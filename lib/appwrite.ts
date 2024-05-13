@@ -38,9 +38,12 @@ export const createUser = async ({ email, password, username }) => {
       username,
     );
 
+    console.log({ newAccount });
+
     if (!newAccount) throw Error;
 
     const avatarUrl = avatars.getInitials(username);
+    console.log({ avatarUrl });
     await signIn(email, password);
     const newUser = await databases.createDocument(
       config.databaseId,
@@ -53,6 +56,8 @@ export const createUser = async ({ email, password, username }) => {
         avatar: avatarUrl,
       },
     );
+
+    console.log({ newUser });
 
     return newUser;
   } catch (error) {
@@ -89,5 +94,18 @@ export const getCurrentUser = async () => {
     return currentUser.documents[0];
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getAllPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(
+      config.databaseId,
+      config.videoCollectionId,
+    );
+
+    return posts.documents;
+  } catch (error) {
+    throw new Error(error);
   }
 };

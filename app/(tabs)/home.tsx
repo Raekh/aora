@@ -1,12 +1,48 @@
-import { View, Text, FlatList, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  SafeAreaView,
+  RefreshControl,
+  Alert,
+} from "react-native";
 
 import { images } from "../../constants";
-import { SearchInput } from "../../components";
+import { EmptyState, SearchInput, Trending } from "../../components";
+import { useEffect, useState } from "react";
+import { getAllPosts } from "../../lib/appwrite";
 
-const home = (params) => {
+const Home = (params) => {
+  const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await getAllPosts();
+        setData(response.data);
+      } catch (error) {
+        Alert.alert("Error", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    // call videos fetch
+    setRefreshing(false);
+  };
+
+  console.log({ data });
+
   return (
-    <SafeAreaView className="bg-primary">
+    <SafeAreaView className="bg-primary h-full">
       <FlatList
         data={[
           {
@@ -53,12 +89,24 @@ const home = (params) => {
               <Text className="text-gray-100 text-lg font-pregular mb-3">
                 Latest Videos
               </Text>
+
+              <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }]} />
             </View>
           </View>
         )}
-      ></FlatList>
+        ListEmptyComponent={() => (
+          <EmptyState
+            title="No videos found"
+            subtitle="Be the first one to upload a video"
+          />
+        )}
+        refreshControl=<RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      />
     </SafeAreaView>
   );
 };
 
-export default home;
+export default Home;

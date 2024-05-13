@@ -4,6 +4,7 @@ import { Tabs } from "expo-router";
 import "../../output.css";
 
 import { icons } from "../../constants";
+import { StatusBar } from "expo-status-bar";
 
 const tabs = [
   {
@@ -82,6 +83,7 @@ const TabsLayout = () => {
           />
         ))}
       </Tabs>
+      <StatusBar backgroundColor="#161622" style="light" />
     </>
   );
 };
