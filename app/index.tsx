@@ -15,7 +15,7 @@ const Welcome = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
-        <View className="w-full justify-center items-center h-full px-4">
+        <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
             source={images.logo}
             className="w-[130px] h-[84px]"
@@ -34,7 +34,7 @@ const Welcome = () => {
             </Text>
             <Image
               source={images.path}
-              className="w-[136px] h-[15px] absolute -bottom-2 -right-8"
+              className="w-[136px] h-[15px] absolute -bottom-2 right-24"
               resizeMode="contain"
             />
           </View>
@@ -44,7 +44,7 @@ const Welcome = () => {
           </Text>
           <CustomButton
             title="Continue with Email"
-            handlePress={() => {}}
+            handlePress={() => router.push("/sign-in")}
             containerStyles="w-full mt-7"
             textStyles=""
             isLoading={false}
